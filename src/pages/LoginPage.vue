@@ -1,5 +1,8 @@
 <script setup lang="ts">
     import {reactive, ref,computed,watch} from 'vue'
+    import {useRouter} from 'vue-router'
+
+    const router = useRouter()
 
     const data = reactive({
         email:'',
@@ -34,8 +37,23 @@
         return pattern.test(input)
     }
 
-    const submitHandler = () => {
+    const submitHandler = async() => {
 
+        const result = await fetch('users.json')
+        const users = await result.json()
+        console.log(users)
+
+        const user = users.find((user:{ email:string,password:string}) => user.email === data.email)
+        if(!user){
+            alert('user not found')
+            return
+        }
+        if(!(user.password===data.password)){
+            alert('Wrong password')
+            return
+        }    
+
+        router.push('session/' + user.id)
     }
 
     const resetHandler = () => {
