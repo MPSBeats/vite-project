@@ -5,27 +5,42 @@
         email:'',
         password:''
     })
+    const isValid = ref(false)
 
 
     watch(data, (val)=>{
         console.log('Changement dans la varibale')
     })
 
-    const isUserInputValid = (input:string):boolean => {
+    //Changement de la valeur pour afficher le submit
+    watch([() => data.email,()=> data.password],()=>{
+        if (isUserInputEmailValid(data.email) && isUserInputPasswordValid(data.password)){
+            isValid.value=true
+        }
+        else{
+            isValid.value=false
+        }
+    })
+
+    //Vérification de l'email
+    const isUserInputEmailValid = (input:string):boolean => {
         const pattern = new RegExp(/^[a-zA-Z0-9._%+-]+@[a-zA-Z0-9.-]+\.[a-zA-Z]{2,}$/)
         return pattern.test(input)
     }
 
-    const submitHandler = () => {
-        if (isUserInputValid(data.email)) {
-            console.log('Email is valid')
-        } else {
-            console.log('Invalid email')
-        }
+    //Vérification du password
+    const isUserInputPasswordValid = (input:string):boolean => {
+        const pattern = new RegExp(/^(?=.*[a-z])(?=.*[A-Z])(?=.*\d)(?=.*[!@#$%^&*])[A-Za-z\d!@#$%^&*]{8,}$/)
+        return pattern.test(input)
     }
 
-    const inputHandler = function(){
-        
+    const submitHandler = () => {
+
+    }
+
+    const resetHandler = () => {
+        data.email=""
+        data.password=""
     }
 
 </script>
@@ -61,10 +76,12 @@
                 <button 
                     type="submit"
                     class="button is-primary"
+                    :disabled="!isValid"
                 >Submit</button>
                 <button 
                     type="reset"
                     class="button is-danger"
+                    @click="resetHandler"
                 >Reset</button>
             </section>
         </form>
