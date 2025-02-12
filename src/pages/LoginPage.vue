@@ -24,7 +24,7 @@
 
     //Vérification de l'email
     const isUserInputEmailValid = (input:string):boolean => {
-        const pattern = new RegExp(/^[a-zA-Z0-9._%+-]+@[a-zA-Z0-9.-]+\.[a-zA-Z]{2,}$/)
+        const pattern = new RegExp(/^(?!.*@.*@)(?!.*\..*\..*)[a-zA-Z0-9._%+-]{1,64}@[a-zA-Z0-9.-]{1,15}\.[a-zA-Z]{2,10}$/)
         return pattern.test(input)
     }
 
